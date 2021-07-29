@@ -5,7 +5,7 @@ stages:
   - deploy
 
 variables:
-  PROJECT_NAME: hyperf
+  PROJECT_NAME: hyperf111
   REGISTRY_URL: registry-docker.org
 
 build_test_docker:
