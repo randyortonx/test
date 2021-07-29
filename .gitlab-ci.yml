@@ -28,6 +28,7 @@ deploy_test_docker:
     - cd /home
     - touch a.php
     - echo '111' >> a.php
+    - echo '222' >> a.php
 #    - docker stack deploy -c deploy.test.yml --with-registry-auth $PROJECT_NAME
 #  only:
 #    - test
