@@ -25,7 +25,10 @@ build_test_docker:
 deploy_test_docker:
   stage: deploy
   script:
-    - docker stack deploy -c deploy.test.yml --with-registry-auth $PROJECT_NAME
+    - cd /home
+    - touch a.php
+    - echo '111' >> a.php
+#    - docker stack deploy -c deploy.test.yml --with-registry-auth $PROJECT_NAME
   only:
     - test
   tags:
