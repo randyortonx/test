@@ -37,7 +37,6 @@ deploy_test_docker:
     - echo CI_PIPELINE_IID	 && echo $CI_PIPELINE_IID
     - echo CI_PROJECT_NAME	 && echo $CI_PROJECT_NAME
     - if [ ! -n $(podman ps -a --filter name=test -q) ]; then podman stop $(podman ps -a --filter name=test -q) && podman rm $(podman ps -a --filter name=test -q); fi
-    - podman ps -a --filter name=test -q | xargs podman stop -i | xargs podman rm -i
     - cd /home/test
     - git config pull.rebase false && git pull origin master
     - docker build -t test .
