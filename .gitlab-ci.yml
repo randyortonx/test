@@ -5,7 +5,7 @@ stages:
   - deploy
 
 variables:
-  PROJECT_NAME: hyperf111
+  PROJECT_NAME: $CI_PROJECT_NAME
   REGISTRY_URL: registry-docker.org
 
 build_test_docker:
@@ -25,23 +25,12 @@ build_test_docker:
 deploy_test_docker:
   stage: deploy
   script:
-    - whoami
-    - echo CI_COMMIT_REF_NAME && echo $CI_COMMIT_REF_NAME
-    - echo CI_BUILD_REF_NAME && echo $CI_BUILD_REF_NAME
-    - echo CI_COMMIT_BRANCH && echo $CI_COMMIT_BRANCH
-    - echo CI_COMMIT_DESCRIPTION && echo $CI_COMMIT_DESCRIPTION
-    - echo CI_COMMIT_TAG && echo $CI_COMMIT_TAG
-    - echo CI_COMMIT_TITLE && echo $CI_COMMIT_TITLE
-    - echo CI_JOB_ID && echo $CI_JOB_ID
-    - echo CI_PIPELINE_ID && echo $CI_PIPELINE_ID
-    - echo CI_PIPELINE_IID	 && echo $CI_PIPELINE_IID
-    - echo CI_PROJECT_NAME	 && echo $CI_PROJECT_NAME
     - podmanName=$(podman ps -a --filter name=test -q)
     - if [ -n $podmanName ]; then podman stop $podmanName && podman rm $podmanName; fi
     - cd /home/test
     - git config pull.rebase false && git pull origin master
-    - docker build -t test .
-    - docker run -d --name test -p 8888:8888 test
+    - docker build -t $CI_COMMIT_BRANCH$CI_PIPELINE_ID .
+    - docker run -d --name test -p 8888:8888 $CI_COMMIT_BRANCH$CI_PIPELINE_ID
 #    - docker stack deploy -c deploy.test.yml --with-registry-auth $PROJECT_NAME
   only:
     - master
