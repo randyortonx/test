@@ -25,13 +25,23 @@ build_test_docker:
 deploy_test_docker:
   stage: deploy
   script:
+    - whoami
+    - echo CI_COMMIT_REF_NAME && echo $CI_COMMIT_REF_NAME
+    - echo CI_BUILD_REF_NAME && echo $CI_BUILD_REF_NAME
+    - echo CI_COMMIT_BRANCH && echo $CI_COMMIT_BRANCH
+    - echo CI_COMMIT_DESCRIPTION && echo $CI_COMMIT_DESCRIPTION
     - cd /home
     - touch a.php
     - echo '111' >> a.php
     - echo '222' >> a.php
+    - cd /home/test
+    - git config pull.rebase false && git pull origin master
+    - docker build -t test .
+    - docker run -d --name test -p 8888:8888 test
+    - curl 127.0.0.1:8888
 #    - docker stack deploy -c deploy.test.yml --with-registry-auth $PROJECT_NAME
-#  only:
-#    - test
+  only:
+    - master
   tags:
     - test
 
